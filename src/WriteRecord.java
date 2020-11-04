@@ -9,9 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 public class WriteRecord {
 
 	ObjectOutputStream objectOut = null;
@@ -33,8 +33,7 @@ public class WriteRecord {
 	 * @param singerName - singer's name
 	 * @param price - CD price
 	 */
-	public void setRecord(int year, String songName, String singerName,
-                                                                 double price) {
+	public void setRecord(int year, String songName, String singerName, double price) {
 		record.setSongName(songName);
 		record.setSingerName(singerName);
 		record.setYear(year);
@@ -48,6 +47,15 @@ public class WriteRecord {
 	public void openFileInputStream(String textFileName) {
         
      // TO BE COMPLETED BY THE STUDENTS
+
+		try {
+			File file = new File(textFileName);
+			textFileIn = new Scanner(file);
+		}
+		catch(FileNotFoundException e) {
+			System.err.println("Error opening file " + textFileName);
+		}
+
 	}
 
 	/**
@@ -57,7 +65,12 @@ public class WriteRecord {
 	public void openObjectOutputStream(String objectFileName) {
         
     // TO BE COMPLETED BY THE STUDENTS
-        
+		try {
+			objectOut = new ObjectOutputStream(new FileOutputStream(objectFileName));
+		}
+		catch(IOException e) {
+			System.err.println("Error opening file " + objectFileName);
+		}
 	}
 	
 	/**
@@ -67,24 +80,41 @@ public class WriteRecord {
 	 */
 	public void createObjectFile() {
 
+		System.out.println("Printing file");
+
 		while (textFileIn.hasNext()) // loop until end of text file is reached
 		{
 			int year = Integer.parseInt(textFileIn.nextLine());
 			System.out.print(year + "  ");       // echo data read from text file
-            
+
 			String songName = textFileIn.nextLine();
 			System.out.print(songName + "  ");  // echo data read from text file
-            
+
 			String singerName = textFileIn.nextLine();
 			System.out.print(singerName + "  "); // echo data read from text file
-            
+
 			double price = Double.parseDouble(textFileIn.nextLine());
 			System.out.println(price + "  ");    // echo data read from text file
-            
+
 			setRecord(year, songName, singerName, price);
 			textFileIn.nextLine();   // read the dashed lines and do nothing
-            
+
             // THE REST OF THE CODE TO BE COMPLETED BY THE STUDENTS
+			try {
+				objectOut.writeObject(record);
+			}
+			catch(IOException e) {
+				System.err.println("Error writing to file");
+			}
+		}
+
+		try {
+			if (objectOut != null) {
+				objectOut.close();
+			}
+		}
+		catch (IOException ex) {
+			System.err.println("Error closing file.");
 		}
 
 		// YOUR CODE GOES HERE
