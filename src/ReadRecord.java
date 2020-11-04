@@ -19,7 +19,7 @@ public class ReadRecord {
     
     private void readObjectsFromFile(String name)
     {
-        MusicRecord record ;
+        MusicRecord record;
         
         try
         {
@@ -40,13 +40,31 @@ public class ReadRecord {
         {
             while ( true )
             {
-                
+
+                record = (MusicRecord) input.readObject();
+
+                System.out.println(record.getYear());
+                System.out.println(record.getSongName());
+                System.out.println(record.getSingerName());
+                System.out.println(record.getPurchasePrice());
+                System.out.println("--------------------");
+
                 
                 // TO BE COMPLETED BY THE STUDENTS
                 
            
             }   // END OF WHILE
         }
+        catch(EOFException eof) {
+            System.out.println("Finished reading file");
+        }
+        catch (IOException ioEx) {
+            System.err.println("Error reading from file");
+        }
+        catch (ClassNotFoundException classEx) {
+            System.err.println("No class MusicRecord found");
+        }
+
                 // ADD NECESSARY catch CLAUSES HERE
 
     }           // END OF METHOD 

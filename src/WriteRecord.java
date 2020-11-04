@@ -99,9 +99,13 @@ public class WriteRecord {
 			setRecord(year, songName, singerName, price);
 			textFileIn.nextLine();   // read the dashed lines and do nothing
 
+//			System.out.println(record.getYear() + "\t" + record.getSongName() + "\t" +
+//					record.getSingerName() + "\t" + record.getPurchasePrice());
+
             // THE REST OF THE CODE TO BE COMPLETED BY THE STUDENTS
 			try {
 				objectOut.writeObject(record);
+				objectOut.reset();
 			}
 			catch(IOException e) {
 				System.err.println("Error writing to file");
